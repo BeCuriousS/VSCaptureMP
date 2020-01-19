@@ -1,0 +1,6 @@
+D:\GitHub\VSCaptureMP\VSCaptureMP\VSCaptureMP\bin\Release\VSCaptureMP.exe.config
+D:\GitHub\VSCaptureMP\VSCaptureMP\VSCaptureMP\bin\Release\VSCaptureMP.exe
+D:\GitHub\VSCaptureMP\VSCaptureMP\VSCaptureMP\bin\Release\VSCaptureMP.pdb
+D:\GitHub\VSCaptureMP\VSCaptureMP\VSCaptureMP\obj\Release\VSCaptureMP.exe
+D:\GitHub\VSCaptureMP\VSCaptureMP\VSCaptureMP\obj\Release\VSCaptureMP.pdb
+D:\GitHub\VSCaptureMP\VSCaptureMP\VSCaptureMP\obj\Release\VSCaptureMP.csprojAssemblyReference.cache
