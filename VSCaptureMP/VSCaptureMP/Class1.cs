@@ -544,6 +544,7 @@ namespace VSCaptureMP
             DateTime dtDateTime = m_baseDateTime.AddMilliseconds(ElapsedTimeMilliseonds);
 
             string strDateTime = dtDateTime.ToString("dd-MM-yyyy HH:mm:ss.fff", CultureInfo.InvariantCulture);
+            Console.WriteLine("Pollpacket received.");
             Console.WriteLine("Time:{0}", strDateTime);
             Console.WriteLine("Time:{0}", m_strTimestamp);
 
@@ -788,7 +789,7 @@ namespace VSCaptureMP
             byte[] stringval = binreader5.ReadBytes(strmp.length);
 
             string label = Encoding.UTF8.GetString(stringval);
-            Console.WriteLine("Label String: {0}", label);
+            //Console.WriteLine("Label String: {0}", label);
         }
 
         public void ReadNumericObservationValue(byte[] avaattribobjects)
@@ -838,11 +839,11 @@ namespace VSCaptureMP
             m_NumericValList.Add(NumVal);
             m_NumValHeaders.Add(NumVal.PhysioID);
 
-            Console.WriteLine("Physiological ID: {0}", physio_id);
+            //Console.WriteLine("Physiological ID: {0}", physio_id);
             //Console.WriteLine("State: {0}", state);
             //Console.WriteLine("Unit code: {0}", unit_code);
-            Console.WriteLine("Value: {0}", valuestr);
-            Console.WriteLine();
+            //Console.WriteLine("Value: {0}", valuestr);
+            //Console.WriteLine();
         }
 
         public void ReadCompoundNumericObsValue(byte[] avaattribobjects)
