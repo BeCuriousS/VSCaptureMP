@@ -176,20 +176,28 @@ namespace VSCaptureMP
                 case 0:
                     break;
                 case 1:
-                    WaveTrtype.AddRange(BitConverter.GetBytes(correctendianshortus(0x03))); //count
+                    WaveTrtype.AddRange(BitConverter.GetBytes(correctendianshortus(0x04))); //count
+                    WaveTrtype.AddRange(BitConverter.GetBytes(correctendianshortus(0x10))); //length
+                    /*WaveTrtype.AddRange(BitConverter.GetBytes(correctendianuint((uint)(Enum.Parse(typeof(DataConstants.WavesIDLabels), "NLS_NOM_ECG_ELEC_POTL_I")))));*/
+                    WaveTrtype.AddRange(BitConverter.GetBytes(correctendianuint((uint)(Enum.Parse(typeof(DataConstants.WavesIDLabels), "NLS_NOM_ECG_ELEC_POTL_II")))));
+                    /*WaveTrtype.AddRange(BitConverter.GetBytes(correctendianuint((uint)(Enum.Parse(typeof(DataConstants.WavesIDLabels), "NLS_NOM_ECG_ELEC_POTL_III")))));*/
+                    WaveTrtype.AddRange(BitConverter.GetBytes(correctendianuint((uint)(Enum.Parse(typeof(DataConstants.WavesIDLabels), "NLS_NOM_RESP")))));
+                    WaveTrtype.AddRange(BitConverter.GetBytes(correctendianuint((uint)(Enum.Parse(typeof(DataConstants.WavesIDLabels), "NLS_NOM_PULS_OXIM_PLETH_LEFT")))));
+                    WaveTrtype.AddRange(BitConverter.GetBytes(correctendianuint((uint)(Enum.Parse(typeof(DataConstants.WavesIDLabels), "NLS_NOM_PULS_OXIM_PLETH_RIGHT")))));
+                    /*WaveTrtype.AddRange(BitConverter.GetBytes(correctendianshortus(0x03))); //count
                     WaveTrtype.AddRange(BitConverter.GetBytes(correctendianshortus(0x0C))); //length
                     WaveTrtype.AddRange(BitConverter.GetBytes(correctendianuint((uint)(Enum.Parse(typeof(DataConstants.WavesIDLabels), "NLS_NOM_ECG_ELEC_POTL_II")))));
                     WaveTrtype.AddRange(BitConverter.GetBytes(correctendianuint((uint)(Enum.Parse(typeof(DataConstants.WavesIDLabels), "NLS_NOM_ECG_ELEC_POTL_I")))));
-                    WaveTrtype.AddRange(BitConverter.GetBytes(correctendianuint((uint)(Enum.Parse(typeof(DataConstants.WavesIDLabels), "NLS_NOM_ECG_ELEC_POTL_III")))));
+                    WaveTrtype.AddRange(BitConverter.GetBytes(correctendianuint((uint)(Enum.Parse(typeof(DataConstants.WavesIDLabels), "NLS_NOM_ECG_ELEC_POTL_III")))));*/
                     break;
                 case 2:
-                    WaveTrtype.AddRange(BitConverter.GetBytes(correctendianshortus(0x05))); //count
+                    /*WaveTrtype.AddRange(BitConverter.GetBytes(correctendianshortus(0x05))); //count
                     WaveTrtype.AddRange(BitConverter.GetBytes(correctendianshortus(0x14))); //length
                     WaveTrtype.AddRange(BitConverter.GetBytes(correctendianuint((uint)(Enum.Parse(typeof(DataConstants.WavesIDLabels), "NLS_NOM_ECG_ELEC_POTL_II")))));
                     WaveTrtype.AddRange(BitConverter.GetBytes(correctendianuint((uint)(Enum.Parse(typeof(DataConstants.WavesIDLabels), "NLS_NOM_PRESS_BLD_ART_ABP")))));
                     WaveTrtype.AddRange(BitConverter.GetBytes(correctendianuint((uint)(Enum.Parse(typeof(DataConstants.WavesIDLabels), "NLS_NOM_PULS_OXIM_PLETH")))));
                     WaveTrtype.AddRange(BitConverter.GetBytes(correctendianuint((uint)(Enum.Parse(typeof(DataConstants.WavesIDLabels), "NLS_NOM_PRESS_BLD_VEN_CENT")))));
-                    WaveTrtype.AddRange(BitConverter.GetBytes(correctendianuint((uint)(Enum.Parse(typeof(DataConstants.WavesIDLabels), "NLS_NOM_RESP")))));
+                    WaveTrtype.AddRange(BitConverter.GetBytes(correctendianuint((uint)(Enum.Parse(typeof(DataConstants.WavesIDLabels), "NLS_NOM_RESP")))));*/
                     break;
                 case 3:
                     WaveTrtype.AddRange(BitConverter.GetBytes(correctendianshortus(0x03))); //count
@@ -819,7 +827,7 @@ namespace VSCaptureMP
             //NumVal.Timestamp = dtDateTime.ToString();
 
             //string strDateTime = dtDateTime.ToString("dd-MM-yyyy HH:mm:ss.fff", CultureInfo.InvariantCulture);
-            string strDateTime = dtDateTime.ToString("G", DateTimeFormatInfo.InvariantInfo);
+            string strDateTime = dtDateTime.ToString("dd/MM/yyyy HH:mm:ss.fff", CultureInfo.InvariantCulture);
             NumVal.Timestamp = strDateTime;
             //NumVal.Timestamp = DateTime.Now.ToString();
 
@@ -916,7 +924,7 @@ namespace VSCaptureMP
             double ElapsedTimeMilliseonds = (currentRelativeTime - m_baseRelativeTime) * 125 / 1000;
             DateTime dtDateTime = m_baseDateTime.AddMilliseconds(ElapsedTimeMilliseonds);
 
-            string strDateTime = dtDateTime.ToString("dd-MM-yyyy HH:mm:ss.fff", CultureInfo.InvariantCulture);
+            string strDateTime = dtDateTime.ToString("dd/MM/yyyy HH:mm:ss.fff", CultureInfo.InvariantCulture);
             //WaveVal.Timestamp = DateTime.Now.ToString();
 
             WaveVal.Timestamp = strDateTime;
@@ -1280,10 +1288,13 @@ namespace VSCaptureMP
                     }
                     else
                     {
+
                         m_strbuildvalues.Insert(0, ',');
                         m_strbuildvalues.Insert(0, m_NumericValList.ElementAt(0).Relativetimestamp);
                         m_strbuildvalues.Insert(0, ',');
                         m_strbuildvalues.Insert(0, m_NumericValList.ElementAt(0).Timestamp);
+                        m_strbuildvalues.Insert(0, ',');
+                        m_strbuildvalues.Insert(0, DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss.fff", CultureInfo.InvariantCulture)); //yyyy-MM-dd
 
 
                         m_strbuildvalues.Remove(m_strbuildvalues.Length - 1, 1);
@@ -1326,7 +1337,9 @@ namespace VSCaptureMP
                         m_strbuildheaders.Insert(0, ',');
                         m_strbuildheaders.Insert(0, "RelativeTime");
                         m_strbuildheaders.Insert(0, ',');
-                        m_strbuildheaders.Insert(0, "Time");
+                        m_strbuildheaders.Insert(0, "IntelliVueX3Time");
+                        m_strbuildheaders.Insert(0, ',');
+                        m_strbuildheaders.Insert(0, "ComputerTime");
 
 
                         m_strbuildheaders.Remove(m_strbuildheaders.Length - 1, 1);
@@ -1399,6 +1412,8 @@ namespace VSCaptureMP
                         index = index + 1;
 
                         {
+                            m_strbuildwavevalues.Append(DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss.fff", CultureInfo.InvariantCulture)); //yyyy-MM-dd
+                            m_strbuildwavevalues.Append(',');
                             m_strbuildwavevalues.Append(WavValResult.Timestamp);
                             m_strbuildwavevalues.Append(',');
                             m_strbuildwavevalues.Append(WavValResult.Relativetimestamp);

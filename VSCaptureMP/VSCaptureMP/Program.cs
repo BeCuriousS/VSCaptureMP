@@ -270,7 +270,7 @@ namespace VSCaptureMP
                 Console.WriteLine();
                 Console.WriteLine("Waveform data export options:");
                 Console.WriteLine("0. None");
-                Console.WriteLine("1. ECG I, II, III");
+                Console.WriteLine("1. ECG II, PLETH_R, PLETH_L, RESP");
                 Console.WriteLine("2. ECG II, ABP, PLETH, CVP, RESP");
                 Console.WriteLine("3. ECG AVR, ECG AVL, ECG AVF");
                 Console.WriteLine("4. ECG V1, ECG V2, ECG V3");
