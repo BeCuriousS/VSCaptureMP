@@ -1,5 +1,5 @@
 ﻿/*
- * This file is part of VitalSignsCaptureMP v1.005.
+ * This file is part of VitalSignsCaptureMP v1.007.
  * Copyright (C) 2017-19 John George K., xeonfusion@users.sourceforge.net
 
     VitalSignsCaptureMP is free software: you can redistribute it and/or modify
@@ -508,10 +508,11 @@ namespace VSCaptureMP
                     WaveTrtype.AddRange(BitConverter.GetBytes(correctendianuint((uint)(Enum.Parse(typeof(DataConstants.WavesIDLabels), "NLS_NOM_ECG_ELEC_POTL_III")))));
                     break;
                 case 2:
-                    WaveTrtype.AddRange(BitConverter.GetBytes(correctendianshortus(0x05))); //count
-                    WaveTrtype.AddRange(BitConverter.GetBytes(correctendianshortus(0x14))); //length
+                    WaveTrtype.AddRange(BitConverter.GetBytes(correctendianshortus(0x06))); //count
+                    WaveTrtype.AddRange(BitConverter.GetBytes(correctendianshortus(0x18))); //length
                     WaveTrtype.AddRange(BitConverter.GetBytes(correctendianuint((uint)(Enum.Parse(typeof(DataConstants.WavesIDLabels), "NLS_NOM_ECG_ELEC_POTL_II")))));
                     WaveTrtype.AddRange(BitConverter.GetBytes(correctendianuint((uint)(Enum.Parse(typeof(DataConstants.WavesIDLabels), "NLS_NOM_PRESS_BLD_ART_ABP")))));
+                    WaveTrtype.AddRange(BitConverter.GetBytes(correctendianuint((uint)(Enum.Parse(typeof(DataConstants.WavesIDLabels), "NLS_NOM_PRESS_BLD_ART")))));
                     WaveTrtype.AddRange(BitConverter.GetBytes(correctendianuint((uint)(Enum.Parse(typeof(DataConstants.WavesIDLabels), "NLS_NOM_PULS_OXIM_PLETH")))));
                     WaveTrtype.AddRange(BitConverter.GetBytes(correctendianuint((uint)(Enum.Parse(typeof(DataConstants.WavesIDLabels), "NLS_NOM_PRESS_BLD_VEN_CENT")))));
                     WaveTrtype.AddRange(BitConverter.GetBytes(correctendianuint((uint)(Enum.Parse(typeof(DataConstants.WavesIDLabels), "NLS_NOM_RESP")))));
@@ -552,11 +553,12 @@ namespace VSCaptureMP
                     WaveTrtype.AddRange(BitConverter.GetBytes(correctendianuint((uint)(Enum.Parse(typeof(DataConstants.WavesIDLabels), "NLS_NOM_PRESS_BLD_ART")))));
                     break;
                 case 8:
-                    WaveTrtype.AddRange(BitConverter.GetBytes(correctendianshortus(0x05))); //count
-                    WaveTrtype.AddRange(BitConverter.GetBytes(correctendianshortus(0x14))); //length
+                    WaveTrtype.AddRange(BitConverter.GetBytes(correctendianshortus(0x06))); //count
+                    WaveTrtype.AddRange(BitConverter.GetBytes(correctendianshortus(0x18))); //length
                     WaveTrtype.AddRange(BitConverter.GetBytes(correctendianuint((uint)(Enum.Parse(typeof(DataConstants.WavesIDLabels), "NLS_NOM_ECG_ELEC_POTL")))));
                     WaveTrtype.AddRange(BitConverter.GetBytes(correctendianuint((uint)(Enum.Parse(typeof(DataConstants.WavesIDLabels), "NLS_NOM_PULS_OXIM_PLETH")))));
                     WaveTrtype.AddRange(BitConverter.GetBytes(correctendianuint((uint)(Enum.Parse(typeof(DataConstants.WavesIDLabels), "NLS_NOM_PRESS_BLD_ART_ABP")))));
+                    WaveTrtype.AddRange(BitConverter.GetBytes(correctendianuint((uint)(Enum.Parse(typeof(DataConstants.WavesIDLabels), "NLS_NOM_PRESS_BLD_ART")))));
                     WaveTrtype.AddRange(BitConverter.GetBytes(correctendianuint((uint)(Enum.Parse(typeof(DataConstants.WavesIDLabels), "NLS_NOM_PRESS_BLD_VEN_CENT")))));
                     WaveTrtype.AddRange(BitConverter.GetBytes(correctendianuint((uint)(Enum.Parse(typeof(DataConstants.WavesIDLabels), "NLS_NOM_AWAY_CO2")))));
                     break;
@@ -905,7 +907,7 @@ namespace VSCaptureMP
                     }
                 }
 
-                if(m_dataexportset == 2) ExportNumValListToJSON("Numeric");
+                if (m_dataexportset == 2) ExportNumValListToJSON("Numeric");
                 ExportDataToCSV();
                 ExportWaveToCSV();
             }
@@ -1417,8 +1419,8 @@ namespace VSCaptureMP
             double value = 0;
             if (fvalue != DataConstants.FLOATTYPE_NAN)
             {
-                uint exponentbits = (fvalue >> 24);
-                uint mantissabits = (fvalue << 8);
+                int exponentbits = (int)(fvalue >> 24);
+                int mantissabits = (int)(fvalue << 8);
                 mantissabits = (mantissabits >> 8);
 
                 sbyte signedexponentbits = (sbyte)exponentbits; // Get Two's complement signed byte
@@ -1790,13 +1792,14 @@ namespace VSCaptureMP
             try
             {
                 // Open file for reading. 
-                StreamWriter wrStream = new StreamWriter(_FileName, true, Encoding.UTF8);
+                using (StreamWriter wrStream = new StreamWriter(_FileName, true, Encoding.UTF8))
+                {
+                    wrStream.Write(strbuildNumVal);
+                    strbuildNumVal.Clear();
 
-                wrStream.Write(strbuildNumVal);
-                strbuildNumVal.Clear();
-
-                // close file stream. 
-                wrStream.Close();
+                    // close file stream. 
+                    wrStream.Close();
+                }
 
             }
 
@@ -1813,25 +1816,15 @@ namespace VSCaptureMP
             try
             {
                 // Open file for reading. 
-                FileStream _FileStream = new FileStream(_FileName, FileMode.Append, FileAccess.Write);
+                using (FileStream _FileStream = new FileStream(_FileName, FileMode.Append, FileAccess.Write))
+                {
+                    // Writes a block of bytes to this stream using data from a byte array
+                    _FileStream.Write(_ByteArray, 0, nWriteLength);
 
-                // Writes a block of bytes to this stream using data from a byte array
-                _FileStream.Write(_ByteArray, 0, nWriteLength);
-                
-                // close file stream. 
-                _FileStream.Close();
-
-               /* // Open file for reading. 
-                StreamWriter wrStream = new StreamWriter(_FileName, true, Encoding.UTF8);
-
-                String datastr = BitConverter.ToString(_ByteArray);
-
-                wrStream.WriteLine(datastr);
-
-                // close file stream. 
-                wrStream.Close();*/
-
-
+                    // close file stream. 
+                    _FileStream.Close();
+                }
+    
                 return true;
             }
 
@@ -1861,11 +1854,11 @@ namespace VSCaptureMP
             try
             {
                 // Open file for reading. 
-                //StreamWriter wrStream = new StreamWriter(pathjson, true, Encoding.UTF8);
-
-                //wrStream.Write(serializedJSON);
-
-                //wrStream.Close();
+                //using (StreamWriter wrStream = new StreamWriter(pathjson, true, Encoding.UTF8))
+                //{
+                //  wrStream.Write(serializedJSON);
+                //  wrStream.Close();
+                //}
 
                 PostJSONDataToServer(serializedJSON);
 
@@ -1882,6 +1875,8 @@ namespace VSCaptureMP
         {
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(m_jsonposturl);
             request.Method = "POST";
+
+            ServicePointManager.SecurityProtocol |= SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
 
             byte[] byteArray = Encoding.UTF8.GetBytes(postData);
             request.ContentType = "application/json";
