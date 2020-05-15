@@ -190,13 +190,20 @@ namespace VSCaptureMP
                     WaveTrtype.AddRange(BitConverter.GetBytes(correctendianuint((uint)(Enum.Parse(typeof(DataConstants.WavesIDLabels), "NLS_NOM_ECG_ELEC_POTL_I")))));
                     WaveTrtype.AddRange(BitConverter.GetBytes(correctendianuint((uint)(Enum.Parse(typeof(DataConstants.WavesIDLabels), "NLS_NOM_ECG_ELEC_POTL_III")))));*/
                     
-                    /*selectedPhysioIDs.Add("NOM_PULS_OXIM_SAT_O2_ART_LEFT");
+                    selectedPhysioIDs.Add("NOM_PULS_OXIM_SAT_O2_ART_LEFT");
                     selectedPhysioIDs.Add("NOM_PLETH_PULS_RATE");
+                    selectedPhysioIDs.Add("NOM_PULS_OXIM_PERF_REL_LEFT");
+                    
                     selectedPhysioIDs.Add("NOM_PULS_OXIM_SAT_O2_ART_RIGHT");
+                    //selectedPhysioIDs.Add("NOM_PLETH_PULS_RATE"); # same as for the left oxymeter
+                    selectedPhysioIDs.Add("NOM_PULS_OXIM_PERF_REL_RIGHT");
+
+                    selectedPhysioIDs.Add("NOM_ECG_CARD_BEAT_RATE");
                     selectedPhysioIDs.Add("NOM_RESP_RATE");
+                    
                     selectedPhysioIDs.Add("NOM_PRESS_BLD_NONINV_SYS");
                     selectedPhysioIDs.Add("NOM_PRESS_BLD_NONINV_DIA");
-                    selectedPhysioIDs.Add("NOM_PRESS_BLD_NONINV_MEAN");*/
+                    selectedPhysioIDs.Add("NOM_PRESS_BLD_NONINV_MEAN");
                     break;
                 case 2:
                     /*WaveTrtype.AddRange(BitConverter.GetBytes(correctendianshortus(0x06))); //count
