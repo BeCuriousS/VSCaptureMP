@@ -4,3 +4,4 @@ D:\GitHub\VSCaptureMP\VSCaptureMP\VSCaptureMP\bin\Release\VSCaptureMP.pdb
 D:\GitHub\VSCaptureMP\VSCaptureMP\VSCaptureMP\obj\Release\VSCaptureMP.exe
 D:\GitHub\VSCaptureMP\VSCaptureMP\VSCaptureMP\obj\Release\VSCaptureMP.pdb
 D:\GitHub\VSCaptureMP\VSCaptureMP\VSCaptureMP\obj\Release\VSCaptureMP.csprojAssemblyReference.cache
+D:\GitHub\VSCaptureMP\VSCaptureMP\VSCaptureMP\obj\Release\VSCaptureMP.csproj.CoreCompileInputs.cache

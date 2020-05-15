@@ -57,6 +57,7 @@ namespace VSCaptureMP
         public string m_jsonposturl;
         public int m_dataexportset = 1;
 
+        public static List<string> selectedPhysioIDs = new List<string>();
 
         public class NumericValResult
         {
@@ -188,6 +189,14 @@ namespace VSCaptureMP
                     WaveTrtype.AddRange(BitConverter.GetBytes(correctendianuint((uint)(Enum.Parse(typeof(DataConstants.WavesIDLabels), "NLS_NOM_ECG_ELEC_POTL_II")))));
                     WaveTrtype.AddRange(BitConverter.GetBytes(correctendianuint((uint)(Enum.Parse(typeof(DataConstants.WavesIDLabels), "NLS_NOM_ECG_ELEC_POTL_I")))));
                     WaveTrtype.AddRange(BitConverter.GetBytes(correctendianuint((uint)(Enum.Parse(typeof(DataConstants.WavesIDLabels), "NLS_NOM_ECG_ELEC_POTL_III")))));*/
+                    
+                    /*selectedPhysioIDs.Add("NOM_PULS_OXIM_SAT_O2_ART_LEFT");
+                    selectedPhysioIDs.Add("NOM_PLETH_PULS_RATE");
+                    selectedPhysioIDs.Add("NOM_PULS_OXIM_SAT_O2_ART_RIGHT");
+                    selectedPhysioIDs.Add("NOM_RESP_RATE");
+                    selectedPhysioIDs.Add("NOM_PRESS_BLD_NONINV_SYS");
+                    selectedPhysioIDs.Add("NOM_PRESS_BLD_NONINV_DIA");
+                    selectedPhysioIDs.Add("NOM_PRESS_BLD_NONINV_MEAN");*/
                     break;
                 case 2:
                     /*WaveTrtype.AddRange(BitConverter.GetBytes(correctendianshortus(0x06))); //count
@@ -837,8 +846,19 @@ namespace VSCaptureMP
             NumVal.Value = valuestr;
             NumVal.DeviceID = m_DeviceID;
 
-            m_NumericValList.Add(NumVal);
-            m_NumValHeaders.Add(NumVal.PhysioID);
+            /* Extension for extracting only specific values */
+            if (selectedPhysioIDs.Count == 0) 
+            {
+                m_NumericValList.Add(NumVal);
+                m_NumValHeaders.Add(NumVal.PhysioID);
+                //Console.WriteLine(NumVal.Value.ToString());
+            }
+            else if (selectedPhysioIDs.Contains(physio_id))
+            {
+                m_NumericValList.Add(NumVal);
+                m_NumValHeaders.Add(NumVal.PhysioID);
+                //Console.WriteLine(NumVal.Value.ToString());
+            }
 
             //Console.WriteLine("Physiological ID: {0}", physio_id);
             //Console.WriteLine("State: {0}", state);
@@ -1284,7 +1304,7 @@ namespace VSCaptureMP
                     uint elementreltime = Convert.ToUInt32(m_NumericValList.ElementAt(i).Relativetimestamp);
                     if (elementreltime == firstelementreltimestamp)
                     {
-                        m_strbuildvalues.Append(m_NumericValList.ElementAt(i).Value);
+                        m_strbuildvalues.Append(m_NumericValList.ElementAt(i).Value.Replace(",", ".")); // some values have decimals so adding the string replacement is important
                         m_strbuildvalues.Append(',');
                         m_elementcount++;
                     }
@@ -1300,7 +1320,7 @@ namespace VSCaptureMP
 
 
                         m_strbuildvalues.Remove(m_strbuildvalues.Length - 1, 1);
-                        m_strbuildvalues.Replace(",,", ",");
+                        //m_strbuildvalues.Replace(",,", ",");
                         m_strbuildvalues.AppendLine();
 
                         ExportNumValListToCSVFile(pathcsv, m_strbuildvalues);
