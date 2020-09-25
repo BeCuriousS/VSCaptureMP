@@ -1447,7 +1447,7 @@ namespace VSCaptureMP
                             m_strbuildwavevalues.Append(',');
                             m_strbuildwavevalues.Append(WavValResult.Relativetimestamp);
                             m_strbuildwavevalues.Append(',');
-                            m_strbuildwavevalues.Append(Waveval.ToString());
+                            m_strbuildwavevalues.Append(Waveval.ToString().Replace(",", "."));
                             m_strbuildwavevalues.Append(',');
                             m_strbuildwavevalues.AppendLine();
                         }
